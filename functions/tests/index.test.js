@@ -6,47 +6,36 @@ describe("unit tests for index.js driver", () => {
   
       test("should return 400 when the token is missing", async () => {
         const request = {
-            body: {
+            headers: {
 
             }
         };
         const response = {
             status: function (status) {
-              try { 
-                expect(status).toEqual(400);
-              } catch (error) {
 
-              }
+              expect(status).toEqual(400);
               return this;
             },
             send: function (message) {
-                console.log(message)
-            },
-            json: function (err) {
-            },
+                expect(message).toEqual("Token is missing")
+            }
         };
         await httpFunction.siteVerify(request, response);
       });
   
       test("should return 400 when the token is invalid", async () => {
         const request = {
-          body: {
+          headers: {
             token: "invalidtoken",
           }
         };
         const response = {
             status: function (status) {
-              try { 
-                expect(status).toEqual(400);
-              } catch (error) {
-
-              }
+              expect(status).toEqual(400);
               return this;
             },
             send: function (message) {
-                console.log(message)
-            },
-            json: function(err){
+                expect(message).toEqual("Invalid token provided")
             },
         };
         await httpFunction.siteVerify(request, response);

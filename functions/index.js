@@ -20,18 +20,20 @@ const client = new SecretManagerServiceClient();
 // payload = 'hello world!' // String source data.
 
 exports.siteVerify = functions.https.onRequest(async (request, response) => {
+
+    
     const [accessResponse] = await client.accessSecretVersion({
-        name: "projects/309119986430/secrets/RecaptchaSecretKey/versions/latest",
+        name: "projects/cruzhacks-4a899/secrets/RecaptchaSecretKey/versions/latest",
     });
-    console.log(secret)
+    const secret = accessResponse.payload.data.toString('utf8');
     const siteVerifyUrl = "https://www.google.com/recaptcha/api/siteverify";
     
-    if (!('token' in request.body)) {
+    // Check if token is in headers 
+    if (!(Object.keys(request.headers).includes("token"))) {
         return response.status(400).send("Token is missing");
     }
-    const secret = accessResponse.payload.data.toString('utf8')
-    var formBody = "secret"+"="+secret;
-    formBody = formBody + "&response"+"="+request.body.token
+    const token = request.headers.token;
+    const formBody = `secret=${secret}&response=${token}`;
     fetch(siteVerifyUrl, {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -41,6 +43,7 @@ exports.siteVerify = functions.https.onRequest(async (request, response) => {
     })
     .then(response => response.json())
     .then(json => {
+        // Handle response from Google's recaptcha API
         if (json['error-codes']) {
             if ('invalid-input-response' in json['error-codes'] && 'invalid-input-secret' in json['error-codes']){
                 return response.status(500).send('Invalid token provided and incorrect secret')
@@ -51,10 +54,8 @@ exports.siteVerify = functions.https.onRequest(async (request, response) => {
             else if ('invalid-input-secret' in json['error-codes']){
                 return response.status(500).send('incorrect secret')
             }
-        } else {    
-            return response.status(200).send(json)
-        }
-        
+        }  
+        return response.status(200).send(json)
     })
     .catch(error => {
         console.log(error)
