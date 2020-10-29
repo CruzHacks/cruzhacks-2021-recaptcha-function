@@ -2,16 +2,15 @@ const functions = require('firebase-functions');
 const fetch = require("node-fetch")
 
 exports.siteVerify = functions.https.onRequest(async (request, response) => {
-
     const secretKey = functions.config().siteverify.recaptchasecretkey;
-    const siteVerifyUrl = "https://www.google.com/recaptcha/api/siteverify";
+    const siteVerifyUrl = functions.config().siteverify.siteverifyurl;
     
     // Check if token is in headers 
     if (!(Object.keys(request.headers).includes("token"))) {
         return response.status(400).send("Token is missing");
     }
     const token = request.headers.token;
-    const formBody = `secret=${secret}&response=${token}`;
+    const formBody = `secret=${secretKey}&response=${token}`;
     fetch(siteVerifyUrl, {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
