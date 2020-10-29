@@ -12,7 +12,7 @@ exports.siteVerify = functions.https.onRequest(async (request, response) => {
   }
   const token = request.headers.token;
   const formBody = `secret=${secretKey}&response=${token}`;
-  fetch(siteVerifyUrl, {
+  return fetch(siteVerifyUrl, {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
