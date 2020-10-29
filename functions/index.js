@@ -1,10 +1,10 @@
 const functions = require("firebase-functions");
-const fetch = require("node-fetch");
+require("isomorphic-fetch");
+//const fetch = require("node-fetch");
 
 exports.siteVerify = functions.https.onRequest(async (request, response) => {
   const secretKey = functions.config().siteverify.recaptchasecretkey;
   const siteVerifyUrl = functions.config().siteverify.siteverifyurl;
-
   if (!Object.keys(request.headers).includes("token")) {
     return response
       .status(401)
@@ -19,7 +19,7 @@ exports.siteVerify = functions.https.onRequest(async (request, response) => {
     method: "POST",
     body: formBody,
   })
-    .then((response) => response.json())
+    .then((res) => res.json())
     .then((json) => {
       if (Object.keys(json).includes("error-codes")) {
         const errors = json["error-codes"];

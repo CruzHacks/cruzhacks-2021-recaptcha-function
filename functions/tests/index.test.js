@@ -1,59 +1,110 @@
 const chai = require("chai");
 const siteVerify = require("../index.js");
+const fetchMock = require("fetch-mock");
 const test = require("firebase-functions-test")();
 test.mockConfig({
-  siteverify: { recaptchasecretkey: "token", siteverifyurl: "url" },
+  siteverify: {
+    recaptchasecretkey: "token",
+    siteverifyurl: "http://www.test.com/siteVerify",
+  },
+});
+describe("unit tests for index.js driver", () => {
+  describe("test recaptcha api", () => {
+    afterEach(() => {
+      fetchMock.restore();
+    });
+    it("return 401 when token is missing", (done) => {
+      const req = {
+        headers: {},
+      };
+      const res = {
+        status: (status) => {
+          chai.assert.equal(status, 401);
+          return res;
+        },
+        send: ({ error, status, message }) => {
+          console.log(message);
+          chai.assert.equal(error, true);
+          chai.assert.equal(status, 401);
+          chai.assert.equal(message, "Token is missing");
+          done();
+        },
+      };
+      siteVerify.siteVerify(req, res);
+    });
+
+    it("return 400 when the token is invalid", (done) => {
+      fetchMock.mock("http://www.test.com/siteVerify", {
+        "error-codes": ["invalid-input-response"],
+      });
+      const req = {
+        headers: {
+          token: "token",
+        },
+      };
+      const res = {
+        status: (status) => {
+          chai.assert.equal(status, 400);
+          return res;
+        },
+        send: ({ error, status, message }) => {
+          chai.assert.equal(error, true);
+          chai.assert.equal(status, 400);
+          chai.assert.equal(message, "Invalid Token Provided");
+          done();
+        },
+      };
+      siteVerify.siteVerify(req, res);
+    });
+
+    it("return 400 when invalid secret and token is provided", (done) => {
+      fetchMock.mock("http://www.test.com/siteVerify", {
+        "error-codes": ["invalid-input-response", "invalid-input-secret"],
+      });
+      const req = {
+        headers: {
+          token: "token",
+        },
+      };
+      const res = {
+        status: (status) => {
+          chai.assert.equal(status, 400);
+          return res;
+        },
+        send: ({ error, status, message }) => {
+          chai.assert.equal(error, true);
+          chai.assert.equal(status, 400);
+          chai.assert.equal(message, "Invalid Token and Secret Provided");
+          done();
+        },
+      };
+      siteVerify.siteVerify(req, res);
+    });
+
+    it("return 401 when invalid secret is provided", (done) => {
+      fetchMock.mock("http://www.test.com/siteVerify", {
+        "error-codes": ["invalid-input-secret"],
+      });
+      const req = {
+        headers: {
+          token: "token",
+        },
+      };
+      const res = {
+        status: (status) => {
+          chai.assert.equal(status, 401);
+          return res;
+        },
+        send: ({ error, status, message }) => {
+          chai.assert.equal(error, true);
+          chai.assert.equal(status, 401);
+          chai.assert.equal(message, "Incorrect Secret Provided");
+          done();
+        },
+      };
+      siteVerify.siteVerify(req, res);
+    });
+  });
 });
 
-// describe("unit tests for index.js driver", () => {
-//   describe("test recaptcha api", () => {
-//     test("should return 400 when the token is missing", async () => {
-//       const request = {
-//         headers: {},
-//       };
-//       const response = {
-//         status: function (status) {
-//           expect(status).toEqual(400);
-//           return this;
-//         },
-//         send: function (message) {
-//           expect(message).toEqual("Token is missing");
-//         },
-//       };
-//       await httpFunction.siteVerify(request, response);
-//     });
-
-//     test("should return 400 when the token is invalid", async () => {
-//       const request = {
-//         headers: {
-//           token: "invalidtoken",
-//         },
-//       };
-//       const response = {
-//         status: function (status) {
-//           expect(status).toEqual(400);
-//           return this;
-//         },
-//         send: function (message) {
-//           expect(message).toEqual("Invalid token provided");
-//         },
-//       };
-//       await httpFunction.siteVerify(request, response);
-//     });
-//   });
-// });
-const request = {
-  headers: {},
-};
-const res = {
-  status: (status) => {
-    chai.assert.equal(status, 401);
-  },
-  send: ({ error, status, message }) => {
-    chai.assert.equal(error, true);
-    chai.assert.equal(status, 401);
-    chai.assert.equal(message, "Token is missing");
-  },
-};
-
-siteVerify.siteVerify(request, res);
+fetchMock.reset();
