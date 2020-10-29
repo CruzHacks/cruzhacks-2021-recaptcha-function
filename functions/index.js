@@ -3,10 +3,7 @@ const fetch = require("node-fetch")
 
 exports.siteVerify = functions.https.onRequest(async (request, response) => {
 
-    const [accessResponse] = await client.accessSecretVersion({
-        name: "projects/cruzhacks-4a899/secrets/RecaptchaSecretKey/versions/latest",
-    });
-    const secret = accessResponse.payload.data.toString('utf8');
+    const secretKey = functions.config().siteverify.recaptchasecretkey;
     const siteVerifyUrl = "https://www.google.com/recaptcha/api/siteverify";
     
     // Check if token is in headers 
