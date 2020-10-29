@@ -104,6 +104,28 @@ describe("unit tests for index.js driver", () => {
       };
       siteVerify.siteVerify(req, res);
     });
+
+    it("return 200 if request was successful", (done) => {
+      fetchMock.mock("http://www.test.com/siteVerify", {});
+      const req = {
+        headers: {
+          token: "token",
+        },
+      };
+      const res = {
+        status: (status) => {
+          chai.assert.equal(status, 200);
+          return res;
+        },
+        send: ({ error, status, message }) => {
+          chai.assert.equal(error, false);
+          chai.assert.equal(status, 200);
+          chai.assert.equal(message, "Succesfully Authenticated Request");
+          done();
+        },
+      };
+      siteVerify.siteVerify(req, res);
+    });
   });
 });
 
