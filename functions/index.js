@@ -1,6 +1,5 @@
 const functions = require("firebase-functions");
 require("isomorphic-fetch");
-//const fetch = require("node-fetch");
 
 exports.siteVerify = functions.https.onRequest(async (request, response) => {
   const secretKey = functions.config().siteverify.recaptchasecretkey;
