@@ -1,4 +1,4 @@
-name: cruzhacks-2021-function-template
+name: cruzhacks-2021-recaptcha-function
 
 on:
   push:
