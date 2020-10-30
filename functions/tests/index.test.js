@@ -8,7 +8,7 @@ test.mockConfig({
     siteverifyurl: "http://www.test.com/siteVerify",
   },
 });
-describe("siteVerify", () => {
+describe("siteVerify Testing Suite", () => {
   afterEach(() => {
     fetchMock.restore();
   });
