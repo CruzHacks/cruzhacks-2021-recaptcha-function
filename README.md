@@ -1,6 +1,6 @@
 # Recaptcha Function
 
-[![Build Status](https://dev.azure.com/kyleobrien0535/CruzHacks%202020%20Website/_apis/build/status/mailing_service/CruzHacks.cruzhacks-mailing-microservice.CI?branchName=master)](https://dev.azure.com/kyleobrien0535/CruzHacks%202020%20Website/_build/latest?definitionId=12&branchName=master)
+![cruzhacks-2021-function-template](https://github.com/CruzHacks/cruzhacks-2021-recaptcha-function/workflows/cruzhacks-2021-function-template/badge.svg)
 
 This Firebase Function is responsible for verifying a user using Google's RECAPTCHA.
 
@@ -100,6 +100,7 @@ curl --request GET \
 
 - Firebase Functions
 - NodeJS
+- Github Actions
 - Mocha
 - Prettier
 - Eslint
