@@ -1,6 +1,6 @@
 # Recaptcha Function
 
-![cruzhacks-2021-function-template](https://github.com/CruzHacks/cruzhacks-2021-recaptcha-function/workflows/cruzhacks-2021-function-template/badge.svg)
+![cruzhacks-2021-function](https://github.com/CruzHacks/cruzhacks-2021-recaptcha-function/workflows/cruzhacks-2021-function-template/badge.svg)
 
 This Firebase Function is responsible for verifying a user using Google's RECAPTCHA.
 
