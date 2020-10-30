@@ -30,7 +30,7 @@ jobs:
       - name: Executing Tests 
         run: |
             cd functions 
-            npm run test:ci
+            npm run test
   auto-deploy:
     runs-on: ubuntu-latest
     needs: [tests, linter]
@@ -44,6 +44,6 @@ jobs:
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: deploy --only functions #TODO: specify function you want to deploy
+          args: deploy --only functions:siteVerify
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
