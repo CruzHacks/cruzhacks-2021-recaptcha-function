@@ -1,13 +1,11 @@
-{
-  "parserOptions": {
+module.exports = {
+  parserOptions: {
     // Required for certain syntax usages
-    "ecmaVersion": 2017
+    ecmaVersion: 2017,
   },
-  "plugins": [
-    "promise", "prettier"
-  ],
-  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
-  "rules": {
+  plugins: ["promise", "prettier"],
+  extends: ["eslint:recommended", "plugin:prettier/recommended"],
+  rules: {
     "prettier/prettier": "error",
     // Removed rule "disallow the use of console" from recommended eslint rules
     "no-console": "off",
@@ -37,7 +35,7 @@
     "array-callback-return": 1,
 
     // Require the use of === and !==
-    "eqeqeq": 2,
+    eqeqeq: 2,
 
     // Disallow the use of alert, confirm, and prompt
     "no-alert": 2,
@@ -57,7 +55,7 @@
     // Warn against unnecessary calls to .bind()
     "no-extra-bind": 1,
 
-    // Warn against unnecessary labels    
+    // Warn against unnecessary labels
     "no-extra-label": 1,
 
     // Disallow leading or trailing decimal points in numeric literals
@@ -112,13 +110,13 @@
     "prefer-arrow-callback": 1,
 
     // Return inside each then() to create readable and reusable Promise chains.
-    // Forces developers to return console logs and http calls in promises. 
+    // Forces developers to return console logs and http calls in promises.
     "promise/always-return": 2,
 
     //Enforces the use of catch() on un-returned promises
     "promise/catch-or-return": 2,
 
     // Warn against nested then() or catch() statements
-    "promise/no-nesting": 1
-  }
-}
+    "promise/no-nesting": 1,
+  },
+};
