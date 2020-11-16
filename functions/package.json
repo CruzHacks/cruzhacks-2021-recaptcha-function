@@ -16,7 +16,7 @@
   "main": "index.js",
   "dependencies": {
     "fetch-mock": "^9.10.7",
-    "firebase-admin": "^9.3.0",
+    "firebase-admin": "^9.4.1",
     "firebase-functions": "^3.11.0",
     "isomorphic-fetch": "^3.0.0",
     "nock": "^13.0.5"
